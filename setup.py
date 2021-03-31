@@ -29,7 +29,7 @@ if __name__ == "__main__":
             # note: CairoSVG actually uses semver
             'CairoSVG~=2.3',
             'h5py~=2.9.0',
-            'lxml~=4.3.3',
+            'lxml>=4.3.3,<4.7.0',
             'numpy~=1.16.3',
             'phonopy==2.1.3',
             'Pillow~=6.2.0',
