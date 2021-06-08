@@ -32,7 +32,7 @@ if __name__ == "__main__":
             'lxml~=4.3.3',
             'numpy~=1.16.3',
             'phonopy==2.1.3',
-            'Pillow~=6.2.0',
+            'Pillow>=6.2,<8.3',
             'pymatgen==2019.4.11',
             'ruamel.yaml~=0.15.94',
             'scipy~=1.2.1',
