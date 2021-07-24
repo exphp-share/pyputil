@@ -1,4 +1,5 @@
 import pathlib
+import os
 
 import numpy as np
 
@@ -33,8 +34,29 @@ def solve_dynmat(dynmat):
 
 
 def from_file(path: str):
-    path = pathlib.Path(path)
+    paths = path.split(os.pathsep)
+    paths = list(map(pathlib.Path, path))
+    if len(paths) == 1:
+        frequencies, eigs = _from_one_path(*paths)
+    elif len(paths) == 2:
+        frequencies, eigs = _from_two_paths(*paths)
+    else:
+        raise ValueError(f'bad number of paths {len(paths)}')
 
+    assert frequencies.ndim == 1
+    n_modes = frequencies.shape[0]
+    assert n_modes % 3 == 0
+
+    n_atoms = n_modes // 3
+    assert eigs.ndim == 3
+    assert eigs.shape[0] == n_modes
+    assert eigs.shape[1] == n_atoms
+    assert eigs.shape[2] == 3
+
+    return frequencies, eigs
+
+
+def _from_one_path(path: pathlib.Path):
     if path.suffix == ".hdf5":
         import h5py
         with h5py.File(path) as data:
@@ -67,12 +89,7 @@ def from_file(path: str):
             # convert from THz to cm^-1
             frequencies *= THZ_TO_WAVENUMBER
 
-    n_modes = frequencies.shape[0]
-    assert n_modes % 3 == 0
-
-    n_atoms = n_modes // 3
-    assert eigs.shape[0] == n_modes
-    assert eigs.shape[1] == n_atoms
-    assert eigs.shape[2] == 3
-
     return frequencies, eigs
+
+def _from_two_paths(freqpath: pathlib.Path, evecpath: pathlib.Path):
+    return np.load(freqpath), np.load(evecpath)

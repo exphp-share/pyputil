@@ -87,7 +87,7 @@ def main():
         metavar='EIGENVECTOR_FILE',
         type=str,
         required=True,
-        help='eigenvector input file (e.g. band.yaml, qpoints.hdf5, gamma-dynmat*.npz)')
+        help='eigenvector input file (e.g. band.yaml, qpoints.hdf5, gamma-dynmat*.npz, freqs.npy:evecs.npy)')
 
     parser.add_argument(
         '-o', '--output',
